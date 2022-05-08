@@ -1,0 +1,42 @@
+class CommentsController < ApplicationController
+      # No `new` action because form is provided by PostsController#show
+      before_action :set_post
+      before_action :set_comment, only: %i[edit update destroy]
+      def create
+        @comment = @post.comments.create(comment_params)
+        redirect_to @post
+      end
+
+      def edit
+        # @comment = Comment.find(params[:id])
+      end
+
+      def update
+        # @comment = Comment.find(params[:id])
+        @comment.update(comment_params)
+        redirect_to @post # @post will be set by before_action
+      end
+
+      def destroy
+
+        @comment.destroy
+        redirect_to @post
+      end
+    
+    
+
+      private
+      def comment_params
+        params.require(:comment).permit(:name, :content)
+      end
+
+      def set_post
+        @post = Post.find(params[:post_id])
+      end
+      
+      def set_comment
+        @comment = Comment.find(params[:id])
+      end
+    
+
+end
